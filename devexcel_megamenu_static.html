@@ -1,0 +1,537 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #EEF2FF; }
+
+  .navbar {
+    background: #fff;
+    border-bottom: 1px solid #E5E7EB;
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #0A1628;
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: #2563EB; }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    list-style: none;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    border-radius: 8px;
+    cursor: default;
+  }
+
+  .nav-link.active {
+    background: #EFF6FF;
+    color: #2563EB;
+  }
+
+  .nav-link svg { width: 13px; height: 13px; }
+  .nav-link.active svg { transform: rotate(180deg); }
+
+  .nav-cta {
+    background: #2563EB;
+    color: #fff;
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+  }
+
+  /* Mega Menu — always visible */
+  .mega-wrap {
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-top: none;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.09);
+    padding: 32px 48px 28px;
+  }
+
+  .mega-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .mega-eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #F3F4F6;
+  }
+
+  .eyebrow-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .eyebrow-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #9CA3AF;
+  }
+
+  .eyebrow-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: #2563EB;
+    background: #EFF6FF;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .eyebrow-right {
+    font-size: 12px;
+    color: #6B7280;
+  }
+
+  .eyebrow-right span {
+    color: #2563EB;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* Grid */
+  .mega-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 280px;
+    gap: 0;
+  }
+
+  .mega-col {
+    padding-right: 28px;
+    border-right: 1px solid #F3F4F6;
+    margin-right: 28px;
+  }
+
+  .mega-col:last-child {
+    border-right: none;
+    margin-right: 0;
+    padding-right: 0;
+  }
+
+  .col-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #9CA3AF;
+    margin-bottom: 12px;
+    padding-left: 10px;
+  }
+
+  .service-link {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    margin-bottom: 3px;
+    cursor: default;
+    transition: background 0.15s;
+  }
+
+  .service-link.hovered {
+    background: #F8FAFF;
+  }
+
+  .s-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+
+  .s-icon.blue  { background: #EFF6FF; }
+  .s-icon.green { background: #ECFDF5; }
+  .s-icon.purple{ background: #F5F3FF; }
+  .s-icon.amber { background: #FFFBEB; }
+  .s-icon.red   { background: #FEF2F2; }
+  .s-icon.teal  { background: #F0FDFA; }
+  .s-icon.pink  { background: #FDF2F8; }
+  .s-icon.indigo{ background: #EEF2FF; }
+
+  .s-icon.hovered { background: #2563EB; }
+
+  .s-text { flex: 1; }
+
+  .s-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+    display: block;
+    line-height: 1.3;
+  }
+
+  .s-desc {
+    font-size: 11px;
+    color: #9CA3AF;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .s-arrow {
+    font-size: 14px;
+    color: #D1D5DB;
+  }
+
+  .service-link.hovered .s-arrow { color: #2563EB; }
+  .service-link.hovered .s-name  { color: #2563EB; }
+
+  /* Section spacing in col */
+  .col-section { margin-top: 18px; }
+
+  /* Right featured card */
+  .featured-card {
+    background: linear-gradient(145deg, #0A1628 0%, #1A3460 100%);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 10px;
+  }
+
+  .fc-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #60A5FA;
+    margin-bottom: 10px;
+  }
+
+  .fc-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 19px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  .fc-desc {
+    font-size: 12px;
+    color: #94A3B8;
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .fc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #2563EB;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 7px;
+  }
+
+  .consult-card {
+    background: #F8FAFF;
+    border: 1px solid #DBEAFE;
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+
+  .cc-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 4px;
+  }
+
+  .cc-sub {
+    font-size: 11px;
+    color: #6B7280;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  .cc-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: #2563EB;
+  }
+
+  /* Footer bar */
+  .mega-footer {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #F3F4F6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-cta {
+    background: #0A1628;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 8px;
+  }
+
+  .footer-ghost {
+    background: transparent;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+  }
+
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #9CA3AF;
+  }
+
+  .trust-dot {
+    width: 7px; height: 7px;
+    background: #22C55E;
+    border-radius: 50%;
+  }
+</style>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">Dev<span>Excel</span></div>
+
+  <ul class="nav-links">
+    <li>
+      <div class="nav-link active">
+        Services
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M4 6l4 4 4-4"/>
+        </svg>
+      </div>
+    </li>
+    <li><div class="nav-link">Portfolios <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6l4 4 4-4"/></svg></div></li>
+    <li><div class="nav-link">About Us</div></li>
+    <li><div class="nav-link">Testimonials</div></li>
+    <li><div class="nav-link">Careers</div></li>
+  </ul>
+
+  <button class="nav-cta">Contact Us</button>
+</div>
+
+<!-- Mega Menu Always Open -->
+<div class="mega-wrap">
+  <div class="mega-inner">
+
+    <div class="mega-eyebrow">
+      <div class="eyebrow-left">
+        <span class="eyebrow-label">Our Capabilities</span>
+        <span class="eyebrow-badge">8 Services</span>
+      </div>
+      <div class="eyebrow-right">Need help choosing? <span>Talk to an expert →</span></div>
+    </div>
+
+    <div class="mega-grid">
+
+      <!-- Col 1: Digital -->
+      <div class="mega-col">
+        <div class="col-title">Digital Transformation</div>
+
+        <div class="service-link hovered">
+          <div class="s-icon blue hovered">🌐</div>
+          <div class="s-text">
+            <span class="s-name">Web Development</span>
+            <span class="s-desc">Scalable full-stack applications</span>
+          </div>
+          <span class="s-arrow">→</span>
+        </div>
+
+        <div class="service-link">
+          <div class="s-icon blue">📱</div>
+          <div class="s-text">
+            <span class="s-name">Mobile App Development</span>
+            <span class="s-desc">iOS & Android native apps</span>
+          </div>
+          <span class="s-arrow">→</span>
+        </div>
+
+        <div class="service-link">
+          <div class="s-icon purple">🎨</div>
+          <div class="s-text">
+            <span class="s-name">UI/UX Design</span>
+            <span class="s-desc">User-centered product design</span>
+          </div>
+          <span class="s-arrow">→</span>
+        </div>
+
+        <div class="col-section">
+          <div class="col-title">Quality Assurance</div>
+
+          <div class="service-link">
+            <div class="s-icon green">🧪</div>
+            <div class="s-text">
+              <span class="s-name">Software QA Testing</span>
+              <span class="s-desc">End-to-end quality control</span>
+            </div>
+            <span class="s-arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 2: Engineering -->
+      <div class="mega-col">
+        <div class="col-title">Engineering</div>
+
+        <div class="service-link">
+          <div class="s-icon amber">🎮</div>
+          <div class="s-text">
+            <span class="s-name">Game Development</span>
+            <span class="s-desc">Unity & Unreal Engine builds</span>
+          </div>
+          <span class="s-arrow">→</span>
+        </div>
+
+        <div class="service-link">
+          <div class="s-icon teal">⚙️</div>
+          <div class="s-text">
+            <span class="s-name">DevOps & Cloud</span>
+            <span class="s-desc">CI/CD pipelines & cloud ops</span>
+          </div>
+          <span class="s-arrow">→</span>
+        </div>
+
+        <div class="col-section">
+          <div class="col-title">Emerging Technologies</div>
+
+          <div class="service-link">
+            <div class="s-icon indigo">🤖</div>
+            <div class="s-text">
+              <span class="s-name">AI Solutions</span>
+              <span class="s-desc">ML models & automation</span>
+            </div>
+            <span class="s-arrow">→</span>
+          </div>
+
+          <div class="service-link">
+            <div class="s-icon pink">🔗</div>
+            <div class="s-text">
+              <span class="s-name">Blockchain Development</span>
+              <span class="s-desc">DApps & smart contracts</span>
+            </div>
+            <span class="s-arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 3: Management -->
+      <div class="mega-col">
+        <div class="col-title">Management Services</div>
+
+        <div class="service-link">
+          <div class="s-icon blue">📋</div>
+          <div class="s-text">
+            <span class="s-name">Project Management</span>
+            <span class="s-desc">Agile delivery & coordination</span>
+          </div>
+          <span class="s-arrow">→</span>
+        </div>
+
+        <div class="service-link">
+          <div class="s-icon green">👨‍💻</div>
+          <div class="s-text">
+            <span class="s-name">Technical Lead</span>
+            <span class="s-desc">Senior tech guidance & review</span>
+          </div>
+          <span class="s-arrow">→</span>
+        </div>
+
+        <div class="service-link">
+          <div class="s-icon amber">📊</div>
+          <div class="s-text">
+            <span class="s-name">Business Analysis</span>
+            <span class="s-desc">Requirements & strategy</span>
+          </div>
+          <span class="s-arrow">→</span>
+        </div>
+
+        <div class="col-section">
+          <div class="col-title">E-Commerce</div>
+          <div class="service-link">
+            <div class="s-icon red">🛒</div>
+            <div class="s-text">
+              <span class="s-name">Storefront Development</span>
+              <span class="s-desc">Custom shops & integrations</span>
+            </div>
+            <span class="s-arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 4: Featured -->
+      <div>
+        <div class="featured-card">
+          <div class="fc-tag">✦ New Service</div>
+          <div class="fc-title">AI-Powered Development</div>
+          <div class="fc-desc">We integrate AI into every layer of your product to accelerate delivery and reduce costs.</div>
+          <div class="fc-btn">Explore Service →</div>
+        </div>
+
+        <div class="consult-card">
+          <div class="cc-title">Not sure where to start?</div>
+          <div class="cc-sub">Book a free 30-min consultation with our solutions team.</div>
+          <div class="cc-link">Schedule a call →</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="mega-footer">
+      <div class="footer-left">
+        <div class="footer-cta">View All Services →</div>
+        <div class="footer-ghost">See Our Work</div>
+      </div>
+      <div class="footer-right">
+        <div class="trust-dot"></div>
+        Trusted by 50+ global clients across 12 industries
+      </div>
+    </div>
+
+  </div>
+</div>
