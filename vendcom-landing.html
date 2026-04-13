@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VendCom – Property Management · Compliance · Made Simple</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:      #0B1829;
+    --navy-2:    #0f2035;
+    --navy-3:    #162840;
+    --blue:      #1A8FE3;
+    --blue-light:#3AAFFF;
+    --blue-glow: rgba(26,143,227,0.18);
+    --steel:     #4A8DB7;
+    --white:     #FFFFFF;
+    --off-white: #EAF2FB;
+    --muted:     rgba(255,255,255,0.55);
+    --border:    rgba(255,255,255,0.08);
+    --green:     #22C55E;
+    --amber:     #F59E0B;
+    --red:       #EF4444;
+    --radius:    14px;
+    --radius-lg: 22px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; line-height: 1.15; }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 60px;
+    background: rgba(11,24,41,0.82);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--blue-light); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 14px; font-weight: 500; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--blue); color: var(--white);
+    padding: 10px 24px; border-radius: 8px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: background .2s, transform .15s;
+    border: none; cursor: pointer;
+  }
+  .nav-cta:hover { background: var(--blue-light); transform: translateY(-1px); }
+
+  /* ── SECTION WRAPPER ── */
+  section { position: relative; z-index: 1; }
+
+  /* ═══════════════════════════
+     SECTION 1 – HERO
+  ═══════════════════════════ */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 140px 60px 80px;
+    overflow: hidden;
+  }
+
+  /* radial glow behind hero */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -120px; left: 50%;
+    transform: translateX(-50%);
+    width: 900px; height: 900px;
+    background: radial-gradient(ellipse, rgba(26,143,227,0.14) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    width: 100%;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(26,143,227,0.12);
+    border: 1px solid rgba(26,143,227,0.3);
+    border-radius: 100px; padding: 6px 16px;
+    font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--blue-light);
+    margin-bottom: 24px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--blue-light); border-radius: 50%;
+    animation: blink 2s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .hero h1 {
+    font-size: clamp(38px, 5vw, 62px);
+    font-weight: 800; letter-spacing: -2px;
+    margin-bottom: 24px;
+    line-height: 1.08;
+  }
+  .hero h1 .accent { color: var(--blue-light); }
+
+  .hero-sub {
+    font-size: 17px; color: var(--muted);
+    font-weight: 400; max-width: 480px;
+    margin-bottom: 40px; line-height: 1.7;
+  }
+
+  .hero-btns { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue), var(--blue-light));
+    color: #fff; padding: 14px 32px;
+    border-radius: 10px; font-size: 15px; font-weight: 600;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 8px 28px rgba(26,143,227,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(26,143,227,0.5); }
+
+  .btn-ghost {
+    background: transparent; color: var(--white);
+    padding: 14px 28px; border-radius: 10px;
+    font-size: 15px; font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: border-color .2s, background .2s;
+    cursor: pointer;
+  }
+  .btn-ghost:hover { border-color: var(--blue); background: var(--blue-glow); }
+
+  .hero-trust {
+    margin-top: 28px; font-size: 13px; color: var(--muted);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-trust::before { content: '🔒'; }
+
+  /* Dashboard mockup */
+  .hero-visual {
+    position: relative;
+    animation: floatY 4s ease-in-out infinite;
+  }
+  @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+  .dashboard-card {
+    background: var(--navy-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(26,143,227,0.08);
+  }
+  .db-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 22px;
+  }
+  .db-title { font-family: 'Syne',sans-serif; font-size: 15px; font-weight: 700; }
+  .db-badge {
+    background: rgba(34,197,94,0.15); color: var(--green);
+    font-size: 11px; font-weight: 600; padding: 4px 12px;
+    border-radius: 100px; border: 1px solid rgba(34,197,94,0.25);
+  }
+
+  .db-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+  .stat-box {
+    background: var(--navy-3);
+    border-radius: var(--radius);
+    padding: 16px; text-align: center;
+    border: 1px solid var(--border);
+  }
+  .stat-num { font-family:'Syne',sans-serif; font-size: 26px; font-weight: 800; }
+  .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .stat-box.green .stat-num { color: var(--green); }
+  .stat-box.amber .stat-num { color: var(--amber); }
+  .stat-box.red   .stat-num { color: var(--red); }
+
+  .db-list { display: flex; flex-direction: column; gap: 10px; }
+  .db-row {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--navy-3); border-radius: 10px;
+    padding: 12px 16px; border: 1px solid var(--border);
+  }
+  .db-row-left { display: flex; align-items: center; gap: 10px; }
+  .db-avatar {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--blue), #0a4f80);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+  }
+  .db-name { font-size: 13px; font-weight: 500; }
+  .db-type { font-size: 11px; color: var(--muted); }
+  .status-pill {
+    font-size: 11px; font-weight: 600; padding: 4px 12px;
+    border-radius: 100px;
+  }
+  .pill-green { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+  .pill-amber { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+  .pill-red   { background: rgba(239,68,68,0.12);  color: var(--red);   border: 1px solid rgba(239,68,68,0.2); }
+
+  /* ═══════════════════════════
+     SECTION 2 – PROBLEM/SOLUTION
+  ═══════════════════════════ */
+  .problem-sol {
+    padding: 120px 60px;
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+  }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--blue-light);
+    margin-bottom: 16px; display: block;
+  }
+  .section-headline {
+    font-size: clamp(28px,4vw,46px); font-weight: 800;
+    letter-spacing: -1.5px; margin-bottom: 16px;
+    max-width: 600px;
+  }
+  .section-sub {
+    font-size: 16px; color: var(--muted); max-width: 560px;
+    line-height: 1.75; margin-bottom: 60px;
+  }
+
+  .compare-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  .compare-col {
+    background: var(--navy-3); border-radius: var(--radius-lg);
+    padding: 36px; border: 1px solid var(--border);
+  }
+  .compare-col.bad { border-color: rgba(239,68,68,0.2); }
+  .compare-col.good { border-color: rgba(26,143,227,0.25); }
+
+  .compare-col-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 28px;
+  }
+  .compare-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .icon-bad { background: rgba(239,68,68,0.12); }
+  .icon-good { background: rgba(26,143,227,0.12); }
+  .compare-col-head h3 { font-size: 16px; font-weight: 700; }
+
+  .compare-items { display: flex; flex-direction: column; gap: 14px; }
+  .compare-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 14px; color: var(--muted); line-height: 1.5;
+  }
+  .ci-dot {
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; flex-shrink: 0; margin-top: 1px;
+  }
+  .dot-bad { background: rgba(239,68,68,0.15); color: var(--red); }
+  .dot-good { background: rgba(26,143,227,0.15); color: var(--blue-light); }
+
+  /* ═══════════════════════════
+     SECTION 3 – FEATURES
+  ═══════════════════════════ */
+  .features { padding: 120px 60px; background: var(--navy); }
+  .features-header { text-align: center; margin-bottom: 64px; }
+  .features-header .section-sub { margin: 0 auto; }
+
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .feat-card {
+    background: var(--navy-2); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 32px;
+    transition: border-color .25s, transform .25s, box-shadow .25s;
+    cursor: default;
+  }
+  .feat-card:hover {
+    border-color: rgba(26,143,227,0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 0 1px rgba(26,143,227,0.1);
+  }
+  .feat-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: linear-gradient(135deg, rgba(26,143,227,0.2), rgba(26,143,227,0.05));
+    border: 1px solid rgba(26,143,227,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 20px;
+  }
+  .feat-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .feat-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+  /* ═══════════════════════════
+     SECTION 4 – HOW IT WORKS
+  ═══════════════════════════ */
+  .workflow { padding: 120px 60px; background: var(--navy-2); }
+  .workflow-header { text-align: center; margin-bottom: 56px; }
+
+  .tabs {
+    display: flex; justify-content: center; gap: 12px;
+    margin-bottom: 48px;
+  }
+  .tab-btn {
+    background: var(--navy-3); border: 1px solid var(--border);
+    color: var(--muted); padding: 11px 28px;
+    border-radius: 100px; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--blue); color: #fff;
+    border-color: var(--blue);
+    box-shadow: 0 4px 20px rgba(26,143,227,0.3);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(5,1fr); gap: 16px;
+    max-width: 1100px; margin: 0 auto;
+    position: relative;
+  }
+  .steps-grid::before {
+    content: '';
+    position: absolute; top: 32px; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(90deg, var(--blue) 0%, rgba(26,143,227,0.15) 100%);
+    z-index: 0;
+  }
+  .step-card {
+    background: var(--navy-3); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 24px 18px;
+    text-align: center; position: relative; z-index: 1;
+  }
+  .step-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--blue-light));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne',sans-serif; font-size: 15px; font-weight: 800;
+    margin: 0 auto 16px; color: #fff;
+    box-shadow: 0 4px 16px rgba(26,143,227,0.4);
+  }
+  .step-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .step-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .step-card.final .step-num { background: linear-gradient(135deg, var(--green), #16a34a); box-shadow: 0 4px 16px rgba(34,197,94,0.3); }
+
+  /* ═══════════════════════════
+     SECTION 5 – PRICING + CTA
+  ═══════════════════════════ */
+  .pricing { padding: 120px 60px; background: var(--navy); }
+  .pricing-header { text-align: center; margin-bottom: 60px; }
+
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+    max-width: 1000px; margin: 0 auto 80px;
+    align-items: start;
+  }
+  .price-card {
+    background: var(--navy-2); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 36px;
+    transition: transform .25s;
+  }
+  .price-card:hover { transform: translateY(-4px); }
+  .price-card.featured {
+    border-color: var(--blue);
+    background: linear-gradient(145deg, rgba(26,143,227,0.08), var(--navy-2));
+    box-shadow: 0 0 0 1px rgba(26,143,227,0.15), 0 20px 60px rgba(26,143,227,0.12);
+    position: relative; overflow: hidden;
+  }
+  .price-card.featured::before {
+    content: '⭐ Most Popular';
+    position: absolute; top: 20px; right: -28px;
+    background: var(--blue); color: #fff;
+    font-size: 11px; font-weight: 700; padding: 5px 40px;
+    transform: rotate(35deg); letter-spacing: 0.5px;
+  }
+
+  .price-plan { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-light); margin-bottom: 8px; }
+  .price-desc { font-size: 13px; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+  .price-features li {
+    font-size: 13.5px; color: var(--muted); display: flex; align-items: center; gap: 10px;
+  }
+  .price-features li::before {
+    content: '✓'; width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(26,143,227,0.12); color: var(--blue-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+  }
+  .price-btn {
+    display: block; text-align: center;
+    padding: 13px 24px; border-radius: 10px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    transition: all .2s; border: 1px solid var(--border);
+    color: var(--white); cursor: pointer;
+  }
+  .price-btn:hover { border-color: var(--blue); background: var(--blue-glow); }
+  .price-btn.featured-btn {
+    background: linear-gradient(135deg, var(--blue), var(--blue-light));
+    border-color: transparent;
+    box-shadow: 0 6px 24px rgba(26,143,227,0.35);
+  }
+  .price-btn.featured-btn:hover { box-shadow: 0 10px 32px rgba(26,143,227,0.5); transform: translateY(-1px); }
+
+  /* CTA Banner */
+  .cta-banner {
+    max-width: 1000px; margin: 0 auto;
+    background: linear-gradient(135deg, rgba(26,143,227,0.12), rgba(26,143,227,0.04));
+    border: 1px solid rgba(26,143,227,0.2);
+    border-radius: var(--radius-lg); padding: 64px 60px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-banner::before {
+    content: '';
+    position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 300px;
+    background: radial-gradient(ellipse, rgba(26,143,227,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-banner h2 { font-size: clamp(26px,3.5vw,42px); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+  .cta-banner p { font-size: 16px; color: var(--muted); max-width: 520px; margin: 0 auto 36px; line-height: 1.7; }
+  .cta-btns { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 60px; text-align: center;
+    border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--muted);
+  }
+  footer span { color: var(--blue-light); }
+
+  /* ── UTILITY ── */
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* ── SCROLL ANIMATION ── */
+  .fade-up {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 24px 60px; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .problem-sol, .features, .workflow, .pricing { padding: 80px 24px; }
+    .compare-grid, .features-grid, .pricing-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid::before { display: none; }
+    .cta-banner { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-logo">VEND<span>COM</span></div>
+  <ul class="nav-links">
+    <li><a href="#problem">Why VendCom</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#workflow">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">Start Free Trial</a>
+</nav>
+
+<!-- ══ SECTION 1 – HERO ══ -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow">UK Compliance Platform for Estate Agents</div>
+      <h1>Stop Chasing<br>Documents.<br><span class="accent">Start Closing Deals.</span></h1>
+      <p class="hero-sub">VendCom keeps your agency fully compliant — before you list, before you let, and before you sell. One platform. Zero gaps.</p>
+      <div class="hero-btns">
+        <a href="#pricing" class="btn-primary">Start Free Trial</a>
+        <a href="#workflow" class="btn-ghost">See How It Works →</a>
+      </div>
+      <p class="hero-trust">Trusted by letting agents and estate agencies across the UK · No credit card required</p>
+    </div>
+
+    <!-- Dashboard Mockup -->
+    <div class="hero-visual">
+      <div class="dashboard-card">
+        <div class="db-header">
+          <span class="db-title">Compliance Overview</span>
+          <span class="db-badge">● Live</span>
+        </div>
+        <div class="db-stats">
+          <div class="stat-box green"><div class="stat-num">24</div><div class="stat-lbl">Ready</div></div>
+          <div class="stat-box amber"><div class="stat-num">7</div><div class="stat-lbl">Action Needed</div></div>
+          <div class="stat-box red"><div class="stat-num">3</div><div class="stat-lbl">Not Compliant</div></div>
+        </div>
+        <div class="db-list">
+          <div class="db-row">
+            <div class="db-row-left">
+              <div class="db-avatar">JM</div>
+              <div><div class="db-name">James Morrison</div><div class="db-type">Landlord · 4 Properties</div></div>
+            </div>
+            <span class="status-pill pill-green">● Ready</span>
+          </div>
+          <div class="db-row">
+            <div class="db-row-left">
+              <div class="db-avatar">SC</div>
+              <div><div class="db-name">Sarah Clarke</div><div class="db-type">Vendor · 2 Listings</div></div>
+            </div>
+            <span class="status-pill pill-amber">● Action Required</span>
+          </div>
+          <div class="db-row">
+            <div class="db-row-left">
+              <div class="db-avatar">RP</div>
+              <div><div class="db-name">Raj Patel</div><div class="db-type">Tenant · AST Pending</div></div>
+            </div>
+            <span class="status-pill pill-red">● Not Compliant</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 2 – PROBLEM / SOLUTION ══ -->
+<section class="problem-sol" id="problem">
+  <div class="container">
+    <span class="section-label fade-up">The Problem</span>
+    <h2 class="section-headline fade-up">Your Compliance Is Scattered. That's a Risk You Can't Afford.</h2>
+    <p class="section-sub fade-up">Most agents manage documents across emails, spreadsheets, and shared drives. One missing certificate or unsigned agreement can delay a deal — or worse, create a legal liability.</p>
+
+    <div class="compare-grid fade-up">
+      <div class="compare-col bad">
+        <div class="compare-col-head">
+          <div class="compare-icon icon-bad">❌</div>
+          <h3>Without VendCom</h3>
+        </div>
+        <div class="compare-items">
+          <div class="compare-item"><div class="ci-dot dot-bad">✕</div>Documents lost in email threads</div>
+          <div class="compare-item"><div class="ci-dot dot-bad">✕</div>No alerts for expiring certificates</div>
+          <div class="compare-item"><div class="ci-dot dot-bad">✕</div>Manual checklists prone to human error</div>
+          <div class="compare-item"><div class="ci-dot dot-bad">✕</div>No visibility across your team</div>
+          <div class="compare-item"><div class="ci-dot dot-bad">✕</div>Deals delayed by missing signatures</div>
+        </div>
+      </div>
+
+      <div class="compare-col good">
+        <div class="compare-col-head">
+          <div class="compare-icon icon-good">✅</div>
+          <h3>With VendCom</h3>
+        </div>
+        <div class="compare-items">
+          <div class="compare-item"><div class="ci-dot dot-good">✓</div>All documents stored in one secure place</div>
+          <div class="compare-item"><div class="ci-dot dot-good">✓</div>Automatic expiry tracking & alerts</div>
+          <div class="compare-item"><div class="ci-dot dot-good">✓</div>Enforced digital compliance checklists</div>
+          <div class="compare-item"><div class="ci-dot dot-good">✓</div>Role-based access for your whole team</div>
+          <div class="compare-item"><div class="ci-dot dot-good">✓</div>E-signatures sent and tracked instantly</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 3 – FEATURES ══ -->
+<section class="features" id="features">
+  <div class="features-header container fade-up">
+    <span class="section-label">What VendCom Does</span>
+    <h2 class="section-headline" style="margin:0 auto 16px;">Everything Your Agency Needs to Stay Compliant</h2>
+    <p class="section-sub">Built specifically for UK letting and estate agents — covering every stage of the landlord, tenant, vendor, and buyer journey.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feat-card fade-up">
+      <div class="feat-icon">🗂</div>
+      <h3>Compliance Checklists</h3>
+      <p>Tailored checklists for vendors, landlords, tenants, and buyers. Know exactly what's missing at every stage.</p>
+    </div>
+    <div class="feat-card fade-up">
+      <div class="feat-icon">📄</div>
+      <h3>Document Management</h3>
+      <p>Upload, store, and tag documents like EPC, Gas Safety, EICR, and ID. Track expiry dates with automated alerts.</p>
+    </div>
+    <div class="feat-card fade-up">
+      <div class="feat-icon">✍️</div>
+      <h3>E-Signature Built In</h3>
+      <p>Send ASTs and Terms of Business for signing directly from the platform. Track who signed and store copies automatically.</p>
+    </div>
+    <div class="feat-card fade-up">
+      <div class="feat-icon">🔒</div>
+      <h3>Workflow Enforcement</h3>
+      <p>The system blocks progression until compliance is complete. No listing without documents. No move-in without signatures.</p>
+    </div>
+    <div class="feat-card fade-up">
+      <div class="feat-icon">📊</div>
+      <h3>Live Status Dashboard</h3>
+      <p>See your entire portfolio at a glance. Green, amber, and red status indicators show you exactly where action is needed.</p>
+    </div>
+    <div class="feat-card fade-up">
+      <div class="feat-icon">🕵️</div>
+      <h3>Full Audit Trail</h3>
+      <p>Every upload, tick, signature, and status change is logged. Stay protected with a complete, timestamped record.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 4 – HOW IT WORKS ══ -->
+<section class="workflow" id="workflow">
+  <div class="workflow-header container fade-up">
+    <span class="section-label">Simple Workflow</span>
+    <h2 class="section-headline" style="margin:0 auto 16px;">Compliant from Day One. Every Time.</h2>
+    <p class="section-sub">VendCom enforces a clear, step-by-step workflow for both lettings and sales — so nothing gets missed and no one moves forward before they're ready.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('lettings', this)">🏠 Lettings</button>
+    <button class="tab-btn" onclick="switchTab('sales', this)">🏢 Sales</button>
+  </div>
+
+  <!-- Lettings -->
+  <div class="tab-panel active" id="tab-lettings">
+    <div class="steps-grid container">
+      <div class="step-card fade-up">
+        <div class="step-num">1</div>
+        <h4>Landlord Verified</h4>
+        <p>Upload landlord ID and right-to-rent documents. Mark profile as verified.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">2</div>
+        <h4>Property Compliant</h4>
+        <p>Upload EPC, Gas Safety Certificate, EICR, and all required certificates.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">3</div>
+        <h4>Tenant Verified</h4>
+        <p>Collect and upload tenant ID, references, and right-to-rent checks.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">4</div>
+        <h4>AST Signed</h4>
+        <p>Send the Assured Shorthold Tenancy agreement for e-signature. Track and store.</p>
+      </div>
+      <div class="step-card final fade-up">
+        <div class="step-num">✓</div>
+        <h4>Move-In Approved</h4>
+        <p>All checks complete. System unlocks move-in. Full audit trail saved.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sales -->
+  <div class="tab-panel" id="tab-sales">
+    <div class="steps-grid container">
+      <div class="step-card fade-up">
+        <div class="step-num">1</div>
+        <h4>Vendor Verified</h4>
+        <p>Upload vendor ID and confirm identity checks are complete.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">2</div>
+        <h4>Terms Signed</h4>
+        <p>Send Terms of Business for e-signature before any listing goes live.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">3</div>
+        <h4>Property Listed</h4>
+        <p>Compliance confirmed. Property can now be listed on the market.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">4</div>
+        <h4>Buyer Verified</h4>
+        <p>Collect buyer ID and proof of funds at offer stage.</p>
+      </div>
+      <div class="step-card final fade-up">
+        <div class="step-num">✓</div>
+        <h4>Sale Progresses</h4>
+        <p>All parties verified. Sale moves forward with a full compliance record.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 5 – PRICING + CTA ══ -->
+<section class="pricing" id="pricing">
+  <div class="pricing-header container fade-up">
+    <span class="section-label">Simple, Transparent Pricing</span>
+    <h2 class="section-headline" style="margin:0 auto 16px;">One Platform. Three Plans. No Surprises.</h2>
+    <p class="section-sub">Whether you're an independent landlord or a growing agency, VendCom scales with you.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="price-card fade-up">
+      <div class="price-plan">Landlord</div>
+      <p class="price-desc">For independent landlords managing their own properties</p>
+      <ul class="price-features">
+        <li>Up to 5 properties</li>
+        <li>Compliance checklists</li>
+        <li>Document upload & storage</li>
+        <li>Expiry alerts</li>
+      </ul>
+      <a href="#" class="price-btn">Get Started</a>
+    </div>
+
+    <div class="price-card featured fade-up">
+      <div class="price-plan">Professional</div>
+      <p class="price-desc">For letting agents and estate agents managing client portfolios</p>
+      <ul class="price-features">
+        <li>Unlimited properties</li>
+        <li>E-signature (AST + Terms of Business)</li>
+        <li>Workflow enforcement</li>
+        <li>Full audit trail</li>
+        <li>Team access (up to 3 users)</li>
+      </ul>
+      <a href="#" class="price-btn featured-btn">Start Free Trial</a>
+    </div>
+
+    <div class="price-card fade-up">
+      <div class="price-plan">Business</div>
+      <p class="price-desc">For multi-branch agencies needing full control and scale</p>
+      <ul class="price-features">
+        <li>Everything in Professional</li>
+        <li>Unlimited users & branches</li>
+        <li>Advanced reporting</li>
+        <li>Priority support</li>
+        <li>Custom onboarding</li>
+      </ul>
+      <a href="#" class="price-btn">Book a Demo</a>
+    </div>
+  </div>
+
+  <!-- Final CTA Banner -->
+  <div class="cta-banner fade-up">
+    <h2>Ready to Make Compliance Simple?</h2>
+    <p>Join agencies across the UK using VendCom to protect their business, close deals faster, and stay fully compliant — every step of the way.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-primary">Start Free Trial</a>
+      <a href="#" class="btn-ghost">Book a Demo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p>© 2025 <span>VendCom</span> · Property Management · Compliance · Made Simple · All rights reserved.</p>
+</footer>
+
+<script>
+  // Tab switching
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Scroll fade-up
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
