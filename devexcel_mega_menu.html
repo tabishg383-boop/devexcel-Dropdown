@@ -1,0 +1,494 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f0f2f5; }
+
+  .navbar {
+    background: #fff;
+    border-bottom: 1px solid #e8eaf0;
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    position: relative;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #0A1628;
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: #2563EB; }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.18s ease;
+    text-decoration: none;
+    user-select: none;
+  }
+
+  .nav-link:hover, .nav-link.active {
+    background: #EFF6FF;
+    color: #2563EB;
+  }
+
+  .nav-link svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+  }
+
+  .nav-item.open .nav-link svg {
+    transform: rotate(180deg);
+  }
+
+  .nav-cta {
+    background: #2563EB;
+    color: #fff !important;
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.18s ease;
+  }
+
+  .nav-cta:hover { background: #1d4ed8; }
+
+  /* Mega Menu */
+  .mega-menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    background: #fff;
+    border: 1px solid #e8eaf0;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.10), 0 4px 16px rgba(0,0,0,0.06);
+    width: 860px;
+    padding: 28px 32px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 999;
+  }
+
+  .nav-item.open .mega-menu {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .mega-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f2f7;
+  }
+
+  .mega-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #9CA3AF;
+  }
+
+  .mega-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: #2563EB;
+    background: #EFF6FF;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .mega-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px 24px;
+  }
+
+  .mega-group {
+    margin-bottom: 8px;
+  }
+
+  .mega-group-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #9CA3AF;
+    margin-bottom: 8px;
+    padding-left: 10px;
+  }
+
+  .mega-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    text-decoration: none;
+    margin-bottom: 2px;
+  }
+
+  .mega-link:hover {
+    background: #F8FAFF;
+  }
+
+  .mega-link:hover .link-arrow {
+    transform: translateX(3px);
+    color: #2563EB;
+  }
+
+  .mega-link:hover .link-icon {
+    background: #2563EB;
+    color: #fff;
+  }
+
+  .link-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #F3F4F6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+    font-size: 15px;
+  }
+
+  .link-text {
+    flex: 1;
+  }
+
+  .link-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1F2937;
+    display: block;
+    line-height: 1.3;
+  }
+
+  .link-desc {
+    font-size: 11px;
+    color: #9CA3AF;
+    display: block;
+    margin-top: 1px;
+  }
+
+  .link-arrow {
+    font-size: 14px;
+    color: #D1D5DB;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .mega-divider {
+    width: 1px;
+    background: #F0F2F7;
+    margin: 0 4px;
+  }
+
+  .mega-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f2f7;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .footer-cta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #0A1628;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .footer-cta:hover { background: #2563EB; }
+
+  .footer-note {
+    font-size: 12px;
+    color: #9CA3AF;
+  }
+
+  /* Page preview */
+  .page-preview {
+    padding: 60px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .preview-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #9CA3AF;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .preview-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    color: #0A1628;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .preview-heading span { color: #2563EB; }
+
+  .preview-sub {
+    font-size: 16px;
+    color: #6B7280;
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  .hint-box {
+    margin-top: 40px;
+    background: #fff;
+    border: 1px solid #e8eaf0;
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #374151;
+  }
+
+  .hint-dot {
+    width: 8px; height: 8px;
+    background: #22C55E;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+</style>
+
+<div class="navbar">
+  <div class="logo">Dev<span>Excel</span></div>
+
+  <ul class="nav-links">
+    <li class="nav-item" id="services-item">
+      <div class="nav-link active" onclick="toggleMenu()">
+        Services
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6l4 4 4-4"/>
+        </svg>
+      </div>
+
+      <div class="mega-menu" id="mega-menu">
+        <div class="mega-header">
+          <span class="mega-title">What we build</span>
+          <span class="mega-badge">6 Capabilities</span>
+        </div>
+
+        <div class="mega-grid">
+
+          <!-- Column 1 -->
+          <div>
+            <div class="mega-group-title">Digital Transformation</div>
+
+            <a class="mega-link" href="#">
+              <div class="link-icon">🌐</div>
+              <div class="link-text">
+                <span class="link-name">Web Development</span>
+                <span class="link-desc">Scalable web applications</span>
+              </div>
+              <span class="link-arrow">→</span>
+            </a>
+
+            <a class="mega-link" href="#">
+              <div class="link-icon">📱</div>
+              <div class="link-text">
+                <span class="link-name">Mobile App Development</span>
+                <span class="link-desc">iOS & Android native apps</span>
+              </div>
+              <span class="link-arrow">→</span>
+            </a>
+
+            <a class="mega-link" href="#">
+              <div class="link-icon">🎨</div>
+              <div class="link-text">
+                <span class="link-name">UI/UX Design</span>
+                <span class="link-desc">User-centered interfaces</span>
+              </div>
+              <span class="link-arrow">→</span>
+            </a>
+
+            <div style="margin-top: 16px;" class="mega-group-title">Quality Assurance</div>
+
+            <a class="mega-link" href="#">
+              <div class="link-icon">🧪</div>
+              <div class="link-text">
+                <span class="link-name">Software Quality Assurance</span>
+                <span class="link-desc">End-to-end QA testing</span>
+              </div>
+              <span class="link-arrow">→</span>
+            </a>
+          </div>
+
+          <!-- Column 2 -->
+          <div>
+            <div class="mega-group-title">Engineering</div>
+
+            <a class="mega-link" href="#">
+              <div class="link-icon">🎮</div>
+              <div class="link-text">
+                <span class="link-name">Game Development</span>
+                <span class="link-desc">Unity & Unreal experiences</span>
+              </div>
+              <span class="link-arrow">→</span>
+            </a>
+
+            <a class="mega-link" href="#">
+              <div class="link-icon">⚙️</div>
+              <div class="link-text">
+                <span class="link-name">DevOps & Cloud</span>
+                <span class="link-desc">CI/CD, cloud ops & migration</span>
+              </div>
+              <span class="link-arrow">→</span>
+            </a>
+
+            <div style="margin-top: 16px;" class="mega-group-title">Emerging Tech</div>
+
+            <a class="mega-link" href="#">
+              <div class="link-icon">🤖</div>
+              <div class="link-text">
+                <span class="link-name">AI Solutions</span>
+                <span class="link-desc">ML models & automation</span>
+              </div>
+              <span class="link-arrow">→</span>
+            </a>
+
+            <a class="mega-link" href="#">
+              <div class="link-icon">🔗</div>
+              <div class="link-text">
+                <span class="link-name">Blockchain Development</span>
+                <span class="link-desc">DApps & smart contracts</span>
+              </div>
+              <span class="link-arrow">→</span>
+            </a>
+          </div>
+
+          <!-- Column 3 — Featured CTA card -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="mega-group-title">Featured</div>
+
+            <div style="background: linear-gradient(135deg, #0A1628 0%, #1E3A5F 100%); border-radius: 12px; padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 200px;">
+              <div>
+                <div style="font-size: 11px; font-weight: 700; color: #60A5FA; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">New Service</div>
+                <div style="font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: #fff; line-height: 1.3; margin-bottom: 8px;">AI-Powered Development</div>
+                <div style="font-size: 12px; color: #94A3B8; line-height: 1.6;">We integrate AI into every layer of your product to accelerate delivery & reduce costs.</div>
+              </div>
+              <div style="margin-top: 16px; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <div style="background: #2563EB; color: #fff; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 6px;">Explore →</div>
+                <div style="font-size: 12px; color: #64748B;">Learn more</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 10px; background: #F8FAFF; border: 1px solid #DBEAFE; border-radius: 10px; padding: 14px 16px;">
+              <div style="font-size: 12px; font-weight: 600; color: #1F2937; margin-bottom: 4px;">Not sure where to start?</div>
+              <div style="font-size: 11px; color: #6B7280; line-height: 1.5;">Book a free 30-min consultation with our team.</div>
+              <div style="margin-top: 8px; font-size: 12px; font-weight: 600; color: #2563EB; cursor: pointer;">Schedule a call →</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mega-footer">
+          <div class="footer-cta">View All Services →</div>
+          <span class="footer-note">Trusted by 50+ global clients across 12 industries</span>
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="#">Portfolios
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6l4 4 4-4"/>
+        </svg>
+      </a>
+    </li>
+    <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Testimonials</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Careers</a></li>
+  </ul>
+
+  <button class="nav-cta">Contact Us</button>
+</div>
+
+<!-- Page behind -->
+<div class="page-preview">
+  <div class="preview-label">Welcome to DevExcel</div>
+  <div class="preview-heading">We Build <span>Digital Products</span><br>That Deliver Results</div>
+  <div class="preview-sub">From web apps to AI integrations — DevExcel IT Solutions is your end-to-end software partner.</div>
+  <div class="hint-box">
+    <div class="hint-dot"></div>
+    Click <strong style="margin: 0 4px;">"Services"</strong> in the navbar above to preview the mega menu
+  </div>
+</div>
+
+<script>
+  function toggleMenu() {
+    const item = document.getElementById('services-item');
+    item.classList.toggle('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    const item = document.getElementById('services-item');
+    if (!item.contains(e.target)) {
+      item.classList.remove('open');
+    }
+  });
+</script>
